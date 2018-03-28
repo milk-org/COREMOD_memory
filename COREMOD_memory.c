@@ -46,7 +46,7 @@
 
 
 
-#ifdef __MACH__
+/*#ifdef __MACH__
 #include <mach/mach_time.h>
 #define CLOCK_REALTIME 0
 #define CLOCK_MONOTONIC 0
@@ -61,9 +61,9 @@ static int clock_gettime(int clk_id, struct mach_timespec *t){
     t->tv_nsec = nseconds;
     return 0;
 }
-#else
+#else*/
 #include <time.h>
-#endif
+//#endif
 
 
 #include <fitsio.h>
@@ -3183,10 +3183,11 @@ int_fast8_t list_image_ID_ofp(FILE *fo)
     char str1[500];
     struct timespec timenow;
     double timediff;
-	struct mallinfo minfo;
-
     sizeb = compute_image_memory();
-	minfo = mallinfo();
+    #ifndef __APPLE__
+    struct mallinfo minfo;
+    minfo = mallinfo();
+    #endif
 
     clock_gettime(CLOCK_REALTIME, &timenow);
 	//fprintf(fo, "time:  %ld.%09ld\n", timenow.tv_sec % 60, timenow.tv_nsec);
