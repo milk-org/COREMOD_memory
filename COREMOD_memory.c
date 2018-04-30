@@ -1663,11 +1663,11 @@ int_fast8_t delete_image_ID(const char* imname) /* deletes an ID */
             data.image[ID].memsize = 0;
 
 
-            sprintf(command, "rm /dev/shm/sem.%s_sem*", imname);
+            sprintf(command, "rm %s/%s.im.sem*", SHAREDMEMDIR, imname);
             r = system(command);
 
 
-            sprintf(fname, "/dev/shm/sem.%s_semlog", imname);
+            sprintf(fname, "%s/%s.im.semlog", SHAREDMEMDIR, imname);
             remove(fname);
 
 
