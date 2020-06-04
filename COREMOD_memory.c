@@ -2123,8 +2123,11 @@ void *save_fits_function( void *ptr )
         //
         float framerate_ave_Hz = (1.0*tmsg->cubesize) / (tmsg->arraytime[tmsg->cubesize-1] - tmsg->arraytime[0]);
         long  indexchange      = tmsg->arrayindex[tmsg->cubesize-1] - tmsg->arrayindex[0];
-        long missedframes      = indexchange - tmsg->cubesize;
-        
+        long  cnt0change       = tmsg->arraycnt0[msg->cubesize-1] - tmsg->arraycnt0[0];
+        long  cnt1change       = tmsg->arraycnt1[msg->cubesize-1] - tmsg->arraycnt1[0];
+        long missedframes      = indexchange - tmsg->cubesize +1;
+        long missedframes0     = cnt0change - tmsg->cubesize +1;
+        long missedframes1     = cnt1change - tmsg->cubesize +1;
         
         
         fprintf(fp, "# Telemetry stream timing data \n");
@@ -2136,12 +2139,31 @@ void *save_fits_function( void *ptr )
         fprintf(fp, "# col4 : Absolute time\n");
         fprintf(fp, "# col5 : stream cnt0 index\n");
         fprintf(fp, "# col6 : stream cnt1 index\n");
+        fprintf(fp, "# col7 : time difference between consecutive frames\n");
         fprintf(fp, "# \n");
         fprintf(fp, "# FRAMERATE      %12.3f  Hz\n", framerate_ave_Hz);
         fprintf(fp, "# INDEXCHANGE    %12ld\n", indexchange);
+        fprintf(fp, "# CNT0CHANGE     %12ld\n", cnt0change);
+        fprintf(fp, "# CNT1CHANGE     %12ld\n", cnt1change);
         fprintf(fp, "# NBMISSEDFRAME  %12ld\n", missedframes);
-        fprintf(fp, "# ");
-                
+        fprintf(fp, "# NBMISSEDFRAME0 %12ld\n", missedframes0);
+        fprintf(fp, "# NBMISSEDFRAME1 %12ld\n", missedframes1);
+        fprintf(fp, "# \n");
+        
+        double *dtarray = (double*) malloc(sizeof(float)*tmsg->cubesize);
+        double *dtarraysorted = (double*) malloc(sizeof(float)*tmsg->cubesize);
+        long *karray = (long*) malloc(sizeof(long)*tmsg->cubesize);
+        
+        dtarray[0] = 0.0;
+        for(k=1; k<tmsg->cubesize; k++)
+        {
+			dtarray[k] = tmsg->arraytime[k] - tmsg->arraytime[k-1];
+		}
+        memcpy(dtarraysorted, dtarray, sizeof(double)*tmsg->cubesize);
+        
+        quick_sort2l_double(dtarraysorted, long *array1, (unsigned long) tmsg->cubesize);
+        
+        
         double t0; // time reference
         t0 = tmsg->arraytime[0];
         for(k=0; k<tmsg->cubesize; k++)
@@ -2156,9 +2178,13 @@ void *save_fits_function( void *ptr )
             // - cnt0
             // - cnt1
             
-            fprintf(fp, "%10ld  %10lu  %15.9lf   %20.9lf  %10ld   %10ld\n", k, tmsg->arrayindex[k], tmsg->arraytime[k]-t0, tmsg->arraytime[k], tmsg->arraycnt0[k], tmsg->arraycnt1[k]);
+            fprintf(fp, "%10ld  %10lu  %15.9lf   %20.9lf  %10ld   %10ld %12.9lf\n", k, tmsg->arrayindex[k], tmsg->arraytime[k]-t0, tmsg->arraytime[k], tmsg->arraycnt0[k], tmsg->arraycnt1[k], dtarray[k];
         }
         fclose(fp);
+        
+        free(karray);
+        free(dtarray);
+        free(dtarraysorted);
     }
 
     //    printf(" DONE\n");
