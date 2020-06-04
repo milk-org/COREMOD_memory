@@ -2157,8 +2157,10 @@ void *save_fits_function( void *ptr )
         
     
         dtarray[0] = 0.0;
+        karray[0] = 0;
         for(k=1; k<tmsg->cubesize; k++)
         {
+			karray[k] = k;
 			dtarray[k] = tmsg->arraytime[k] - tmsg->arraytime[k-1];
 		}
         memcpy(dtarraysorted, dtarray, sizeof(double)*tmsg->cubesize);
