@@ -2184,7 +2184,7 @@ void *save_fits_function( void *ptr )
         double expectedframes = (tmsg->arraytime[tmsg->cubesize-1]-tmsg->arraytime[0])/mediandtval;
         double likelymissedframes = expectedframes - tmsg->cubesize;
         fprintf(fp, "# LIKELYMISSEDFRAMES         %12.3f  %7.3f%%\n", likelymissedframes, 100.0*likelymissedframes/expectedframes);
-        fprintf(fp, "# LIKELYMISSEDFRAMES_LOGGER  %12.3f  %7.3f%%\n", missedframes, 100.0*missedframes/expectedframes);
+        fprintf(fp, "# LIKELYMISSEDFRAMES_LOGGER  %12.3f  %7.3f%%\n", 1.0*missedframes, 100.0*missedframes/expectedframes);
         fprintf(fp, "# LIKELYMISSEDFRAMES_INPUT   %12.3f  %7.3f%%\n", likelymissedframes-missedframes, 100.0*(likelymissedframes-missedframes)/expectedframes);
         fprintf(fp, "# \n");
 		for(int dti=0; dti<20; dti++)
