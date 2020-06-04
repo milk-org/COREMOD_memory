@@ -2166,7 +2166,7 @@ void *save_fits_function( void *ptr )
         quick_sort2l_double(dtarraysorted, karray, (unsigned long) tmsg->cubesize);
         
         
-        fprintf(fp, "# MEDIANDTVAL      %12.3f  usec\n", dtarraysorted[(int) (tmsg->cubesize/2)]*1.0e6)
+        fprintf(fp, "# MEDIANDTVAL      %12.3f  usec\n", dtarraysorted[(int) (tmsg->cubesize/2)]*1.0e6);
 		for(int dti=0; dti<20; dti++)
 		{			
 			fprintf(fp, "# MEDIANDT%02dVAL    %12.3f  usec  at index %ld\n", dti, dtarraysorted[tmsg->cubesize-1-dti]*1.0e6, karray[tmsg->cubesize-1-dti]);			
