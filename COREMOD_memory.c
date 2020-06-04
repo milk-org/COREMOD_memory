@@ -74,6 +74,7 @@ static int clock_gettime(int clk_id, struct mach_timespec *t){
 #include "00CORE/00CORE.h"
 #include "COREMOD_memory/COREMOD_memory.h"
 #include "COREMOD_iofits/COREMOD_iofits.h"
+#include "COREMOD_iofits/COREMOD_tools.h"
 
  
 # ifdef _OPENMP
@@ -2123,8 +2124,8 @@ void *save_fits_function( void *ptr )
         //
         float framerate_ave_Hz = (1.0*tmsg->cubesize) / (tmsg->arraytime[tmsg->cubesize-1] - tmsg->arraytime[0]);
         long  indexchange      = tmsg->arrayindex[tmsg->cubesize-1] - tmsg->arrayindex[0];
-        long  cnt0change       = tmsg->arraycnt0[msg->cubesize-1] - tmsg->arraycnt0[0];
-        long  cnt1change       = tmsg->arraycnt1[msg->cubesize-1] - tmsg->arraycnt1[0];
+        long  cnt0change       = tmsg->arraycnt0[tmsg->cubesize-1] - tmsg->arraycnt0[0];
+        long  cnt1change       = tmsg->arraycnt1[tmsg->cubesize-1] - tmsg->arraycnt1[0];
         long missedframes      = indexchange - tmsg->cubesize +1;
         long missedframes0     = cnt0change - tmsg->cubesize +1;
         long missedframes1     = cnt1change - tmsg->cubesize +1;
@@ -2161,7 +2162,7 @@ void *save_fits_function( void *ptr )
 		}
         memcpy(dtarraysorted, dtarray, sizeof(double)*tmsg->cubesize);
         
-        quick_sort2l_double(dtarraysorted, long *array1, (unsigned long) tmsg->cubesize);
+        quick_sort2l_double(dtarraysorted, karray, (unsigned long) tmsg->cubesize);
         
         
         double t0; // time reference
