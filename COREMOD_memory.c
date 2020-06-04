@@ -2169,11 +2169,12 @@ void *save_fits_function( void *ptr )
         
         
         fprintf(fp, "# MEDIANDTVAL      %12.3f  usec\n", dtarraysorted[(int) (tmsg->cubesize/2)]*1.0e6);
+        fprintf(fp, "# \n");
 		for(int dti=0; dti<20; dti++)
 		{			
-			fprintf(fp, "# MEDIANDT%02dVAL    %12.3f  usec  at index %ld\n", dti, dtarraysorted[tmsg->cubesize-1-dti]*1.0e6, karray[tmsg->cubesize-1-dti]);			
+			fprintf(fp, "# MEDIANDT%02dVAL    %12.3f  usec  at index %6ld\n", dti, dtarraysorted[tmsg->cubesize-1-dti]*1.0e6, karray[tmsg->cubesize-1-dti]);			
 		}
-
+        fprintf(fp, "# \n");
         
         
         
