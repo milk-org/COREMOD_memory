@@ -1964,7 +1964,7 @@ int_fast8_t clearall()
 /**
  * ## Purpose
  * 
- * Save telemetry stream data 
+ * Save telemetry stream data to filesystem
  * 
  */
 void *save_fits_function( void *ptr )
@@ -1988,7 +1988,7 @@ void *save_fits_function( void *ptr )
     FILE *fp;
 
 
-    int RT_priority = 20;
+    int RT_priority = 0;
     struct sched_param schedpar;
 
 
@@ -2118,6 +2118,15 @@ void *save_fits_function( void *ptr )
             exit(0);
         }
         
+        
+        // compute some simple stats
+        //
+        float framerate_ave_Hz = (1.0*tmsg->cubesize) / (tmsg->arraytime[tmsg->cubesize-1] - tmsg->arraytime[0]);
+        long  indexchange      = tmsg->arrayindex[tmsg->cubesize-1] - tmsg->arrayindex[0];
+        long missedframes      = indexchange - tmsg->cubesize;
+        
+        
+        
         fprintf(fp, "# Telemetry stream timing data \n");
         fprintf(fp, "# File written by function %s in file %s\n", __FUNCTION__, __FILE__);
         fprintf(fp, "# \n");
@@ -2128,6 +2137,10 @@ void *save_fits_function( void *ptr )
         fprintf(fp, "# col5 : stream cnt0 index\n");
         fprintf(fp, "# col6 : stream cnt1 index\n");
         fprintf(fp, "# \n");
+        fprintf(fp, "# FRAMERATE      %12.3f  Hz\n", framerate_ave_Hz);
+        fprintf(fp, "# INDEXCHANGE    %12ld\n", indexchange);
+        fprintf(fp, "# NBMISSEDFRAME  %12ld\n", missedframes);
+        fprintf(fp, "# ");
                 
         double t0; // time reference
         t0 = tmsg->arraytime[0];
