@@ -8944,6 +8944,9 @@ long __attribute__((hot)) COREMOD_MEMORY_sharedMem_2Dim_log(
             NBframemissing = (array_cnt0[frameindex-1]-array_cnt0[0]) - (frameindex-1);
 
             printf("===== CUBE %8lld   Number of missed frames = %8ld  / %ld  / %8ld ====\n", logshimconf[0].filecnt, NBframemissing, frameindex, (long) zsize );
+            printf("   cnt0   %20llu -%20llu\n", array_cnt0[0], array_cnt0[frameindex-1]);
+            printf("   cnt1   %20llu -%20llu\n", array_cnt1[0], array_cnt1[frameindex-1]);
+            
 
             if(VERBOSE > 0)
             {
