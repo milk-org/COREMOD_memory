@@ -2155,6 +2155,7 @@ void *save_fits_function( void *ptr )
         double *dtarraysorted = (double*) malloc(sizeof(float)*tmsg->cubesize);
         long *karray = (long*) malloc(sizeof(long)*tmsg->cubesize);
         
+    
         dtarray[0] = 0.0;
         for(k=1; k<tmsg->cubesize; k++)
         {
@@ -2162,7 +2163,7 @@ void *save_fits_function( void *ptr )
 		}
         memcpy(dtarraysorted, dtarray, sizeof(double)*tmsg->cubesize);
         
-        quick_sort2l_double(dtarraysorted, karray, (unsigned long) tmsg->cubesize);
+        //quick_sort2l_double(dtarraysorted, karray, (unsigned long) tmsg->cubesize);
         
         
         double t0; // time reference
@@ -2186,6 +2187,7 @@ void *save_fits_function( void *ptr )
         free(karray);
         free(dtarray);
         free(dtarraysorted);
+    
     }
 
     //    printf(" DONE\n");
