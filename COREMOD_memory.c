@@ -2179,7 +2179,7 @@ void *save_fits_function( void *ptr )
             // - cnt0
             // - cnt1
             
-            fprintf(fp, "%10ld  %10lu  %15.9lf   %20.9lf  %10ld   %10ld %12.9lf\n", k, tmsg->arrayindex[k], tmsg->arraytime[k]-t0, tmsg->arraytime[k], tmsg->arraycnt0[k], tmsg->arraycnt1[k], dtarray[k];
+            fprintf(fp, "%10ld  %10lu  %15.9lf   %20.9lf  %10ld   %10ld %12.9lf\n", k, tmsg->arrayindex[k], tmsg->arraytime[k]-t0, tmsg->arraytime[k], tmsg->arraycnt0[k], tmsg->arraycnt1[k], dtarray[k]);
         }
         fclose(fp);
         
