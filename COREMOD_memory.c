@@ -2147,8 +2147,8 @@ void *save_fits_function( void *ptr )
         fprintf(fp, "# INDEXCHANGE    %12ld\n", indexchange);
         fprintf(fp, "# CNT0CHANGE     %12ld\n", cnt0change);
         fprintf(fp, "# CNT1CHANGE     %12ld\n", cnt1change);
-        fprintf(fp, "# NBMISSEDFRAME  %12ld\n", missedframes);
-        fprintf(fp, "# NBMISSEDFRAME0 %12ld\n", missedframes0);
+        fprintf(fp, "# NBMISSEDFRAME  %12ld missed by logger\n", missedframes);
+        fprintf(fp, "# NBMISSEDFRAME0 %12ld missed by logger\n", missedframes0);
         fprintf(fp, "# NBMISSEDFRAME1 %12ld\n", missedframes1);
         fprintf(fp, "# \n");
         
@@ -2181,8 +2181,11 @@ void *save_fits_function( void *ptr )
         fprintf(fp, "# MEDIANDTVAL      %12.3f  usec\n", mediandtval*1.0e6);
         fprintf(fp, "# MFRAMERATE       %12.3f  Hz\n", 1.0/mediandtval);
         fprintf(fp, "# \n");
-        double likelymissedframes = (tmsg->arraytime[tmsg->cubesize-1]-tmsg->arraytime[0])/mediandtval - tmsg->cubesize;
-        fprintf(fp, "# LIKELYMISSEDFRAMES  %12.3f\n", likelymissedframes);
+        double expectedframes = (tmsg->arraytime[tmsg->cubesize-1]-tmsg->arraytime[0])/mediandtval;
+        double likelymissedframes = expectedframes - tmsg->cubesize;
+        fprintf(fp, "# LIKELYMISSEDFRAMES         %12.3f  %7.3f%%\n", likelymissedframes, 100.0*likelymissedframes/expectedframes);
+        fprintf(fp, "# LIKELYMISSEDFRAMES_LOGGER  %12.3f  %7.3f%%\n", missedframes, 100.0*missedframes/expectedframes);
+        fprintf(fp, "# LIKELYMISSEDFRAMES_INPUT   %12.3f  %7.3f%%\n", likelymissedframes-missedframes, 100.0*(likelymissedframes-missedframes)/expectedframes);
         fprintf(fp, "# \n");
 		for(int dti=0; dti<20; dti++)
 		{			
