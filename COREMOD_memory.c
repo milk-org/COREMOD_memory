@@ -2151,8 +2151,8 @@ void *save_fits_function( void *ptr )
         fprintf(fp, "# NBMISSEDFRAME1 %12ld\n", missedframes1);
         fprintf(fp, "# \n");
         
-        double *dtarray = (double*) malloc(sizeof(float)*tmsg->cubesize);
-        double *dtarraysorted = (double*) malloc(sizeof(float)*tmsg->cubesize);
+        double *dtarray = (double*) malloc(sizeof(double)*tmsg->cubesize);
+        double *dtarraysorted = (double*) malloc(sizeof(double)*tmsg->cubesize);
         long *karray = (long*) malloc(sizeof(long)*tmsg->cubesize);
         
     
@@ -2163,7 +2163,16 @@ void *save_fits_function( void *ptr )
 		}
         memcpy(dtarraysorted, dtarray, sizeof(double)*tmsg->cubesize);
         
-        //quick_sort2l_double(dtarraysorted, karray, (unsigned long) tmsg->cubesize);
+        quick_sort2l_double(dtarraysorted, karray, (unsigned long) tmsg->cubesize);
+        
+        
+        fprintf(fp, "# MEDIANDTVAL      %12.3f  usec\n", dtarraysorted[(int) (tmsg->cubesize/2)]*1.0e6)
+		for(int dti=0; dti<20; dti++)
+		{			
+			fprintf(fp, "# MEDIANDT%02dVAL    %12.3f  usec  at index %ld\n", dti, dtarraysorted[tmsg->cubesize-1-dti]*1.0e6, karray[tmsg->cubesize-1-dti]);			
+		}
+
+        
         
         
         double t0; // time reference
