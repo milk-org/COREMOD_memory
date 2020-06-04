@@ -2143,6 +2143,7 @@ void *save_fits_function( void *ptr )
         fprintf(fp, "# col7 : time difference between consecutive frames\n");
         fprintf(fp, "# \n");
         fprintf(fp, "# FRAMERATE      %12.3f  Hz\n", framerate_ave_Hz);
+        fprintf(fp, "# TIMESPAN       %12.3f  sec\n", tmsg->arraytime[tmsg->cubesize-1]-tmsg->arraytime[0]);
         fprintf(fp, "# INDEXCHANGE    %12ld\n", indexchange);
         fprintf(fp, "# CNT0CHANGE     %12ld\n", cnt0change);
         fprintf(fp, "# CNT1CHANGE     %12ld\n", cnt1change);
@@ -2167,12 +2168,25 @@ void *save_fits_function( void *ptr )
         
         quick_sort2l_double(dtarraysorted, karray, (unsigned long) tmsg->cubesize);
         
+        double mediandtval;        
+        int kmcnt = 0;
+        for( int km = (int) (0.45*tmsg->cubesize); km < (int) (0.55*tmsg->cubesize); km++ )
+        {
+			kmcnt ++;
+			mediandtval += dtarraysorted[km];
+		}
+		mediandtval /= kmcnt;
         
-        fprintf(fp, "# MEDIANDTVAL      %12.3f  usec\n", dtarraysorted[(int) (tmsg->cubesize/2)]*1.0e6);
+        
+        fprintf(fp, "# MEDIANDTVAL      %12.3f  usec\n", mediandtval*1.0e6);
+        fprintf(fp, "# MFRAMERATE       %12.3f  Hz\n", 1.0/mediandtval);
+        fprintf(fp, "# \n");
+        double likelymissedframes = (tmsg->arraytime[tmsg->cubesize-1]-tmsg->arraytime[0])/mediandtval - tmsg->cubesize;
+        fprintf(fp, "# LIKELYMISSEDFRAMES  %12.3f\n", likelymissedframes);
         fprintf(fp, "# \n");
 		for(int dti=0; dti<20; dti++)
 		{			
-			fprintf(fp, "# MEDIANDT%02dVAL    %12.3f  usec  at index %6ld\n", dti, dtarraysorted[tmsg->cubesize-1-dti]*1.0e6, karray[tmsg->cubesize-1-dti]);			
+			fprintf(fp, "# MAXDT%02dVAL       %12.3f  usec  at index %6ld\n", dti, dtarraysorted[tmsg->cubesize-1-dti]*1.0e6, karray[tmsg->cubesize-1-dti]);			
 		}
         fprintf(fp, "# \n");
         
