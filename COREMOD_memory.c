@@ -8445,7 +8445,7 @@ long __attribute__((hot)) COREMOD_MEMORY_sharedMem_2Dim_log(
     uint64_t *array_cnt1;
     uint64_t *array_cnt1_cp;
 
-    int RT_priority = 80; //any number from 0-99
+    int RT_priority = 20; //any number from 0-99
     struct sched_param schedpar;
 
     int use_semlog;
@@ -8536,52 +8536,62 @@ long __attribute__((hot)) COREMOD_MEMORY_sharedMem_2Dim_log(
     case _DATATYPE_FLOAT:
         framesize = SIZEOF_DATATYPE_FLOAT*xsize*ysize;
         ptr0_0 = (char*) data.image[ID].array.F;
+        ptr1_0 = (char*) data.image[IDb].array.F;
         break;
 
     case _DATATYPE_INT8:
         framesize = SIZEOF_DATATYPE_INT8*xsize*ysize;
         ptr0_0 = (char*) data.image[ID].array.SI8;
+        ptr1_0 = (char*) data.image[IDb].array.SI8;
         break;
 
     case _DATATYPE_UINT8:
         framesize = SIZEOF_DATATYPE_UINT8*xsize*ysize;
         ptr0_0 = (char*) data.image[ID].array.UI8;
+        ptr1_0 = (char*) data.image[IDb].array.UI8;
         break;
 
     case _DATATYPE_INT16:
         framesize = SIZEOF_DATATYPE_INT16*xsize*ysize;
         ptr0_0 = (char*) data.image[ID].array.SI16;
+        ptr1_0 = (char*) data.image[IDb].array.SI16;
         break;
 
     case _DATATYPE_UINT16:
         framesize = SIZEOF_DATATYPE_UINT16*xsize*ysize;
         ptr0_0 = (char*) data.image[ID].array.UI16;
+        ptr1_0 = (char*) data.image[IDb].array.UI16;
         break;
 
     case _DATATYPE_INT32:
         framesize = SIZEOF_DATATYPE_INT32*xsize*ysize;
         ptr0_0 = (char*) data.image[ID].array.SI32;
+        ptr1_0 = (char*) data.image[IDb].array.SI32;
         break;
 
     case _DATATYPE_UINT32:
         framesize = SIZEOF_DATATYPE_UINT32*xsize*ysize;
         ptr0_0 = (char*) data.image[ID].array.UI32;
+        ptr1_0 = (char*) data.image[IDb].array.UI32;
         break;
 
     case _DATATYPE_INT64:
         framesize = SIZEOF_DATATYPE_INT64*xsize*ysize;
         ptr0_0 = (char*) data.image[ID].array.SI64;
+        ptr1_0 = (char*) data.image[IDb].array.SI64;
         break;
 
     case _DATATYPE_UINT64:
         framesize = SIZEOF_DATATYPE_UINT64*xsize*ysize;
         ptr0_0 = (char*) data.image[ID].array.UI64;
+        ptr1_0 = (char*) data.image[IDb].array.UI64;
         break;
 
 
     case _DATATYPE_DOUBLE:
         framesize = SIZEOF_DATATYPE_DOUBLE*xsize*ysize;
         ptr0_0 = (char*) data.image[ID].array.D;
+        ptr1_0 = (char*) data.image[IDb].array.D;
         break;
 
     default:
@@ -8590,51 +8600,6 @@ long __attribute__((hot)) COREMOD_MEMORY_sharedMem_2Dim_log(
         break;
     }
 
-
-
-    switch ( datatype ) {
-
-    case _DATATYPE_FLOAT:
-        ptr1_0 = (char*) data.image[IDb].array.F;
-        break;
-
-    case _DATATYPE_INT8:
-        ptr1_0 = (char*) data.image[IDb].array.SI8;
-        break;
-
-    case _DATATYPE_UINT8:
-        ptr1_0 = (char*) data.image[IDb].array.UI8;
-        break;
-
-    case _DATATYPE_INT16:
-        ptr1_0 = (char*) data.image[IDb].array.SI16;
-        break;
-
-    case _DATATYPE_UINT16:
-        ptr1_0 = (char*) data.image[IDb].array.UI16;
-        break;
-
-    case _DATATYPE_INT32:
-        ptr1_0 = (char*) data.image[IDb].array.SI32;
-        break;
-
-    case _DATATYPE_UINT32:
-        ptr1_0 = (char*) data.image[IDb].array.UI32;
-        break;
-
-    case _DATATYPE_INT64:
-        ptr1_0 = (char*) data.image[IDb].array.SI64;
-        break;
-
-    case _DATATYPE_UINT64:
-        ptr1_0 = (char*) data.image[IDb].array.UI64;
-        break;
-
-    case _DATATYPE_DOUBLE:
-        ptr1_0 = (char*) data.image[IDb].array.D;
-        break;
-
-    }
 
 
 
