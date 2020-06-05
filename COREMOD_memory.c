@@ -1989,7 +1989,7 @@ void *save_fits_function( void *ptr )
     FILE *fp;
 
 
-    int RT_priority = 0;
+    int RT_priority = 5;
     struct sched_param schedpar;
 
 
@@ -8516,7 +8516,7 @@ long __attribute__((hot)) COREMOD_MEMORY_sharedMem_2Dim_log(
     uint64_t *array_cnt1;
     uint64_t *array_cnt1_cp;
 
-    int RT_priority = 20; //any number from 0-99
+    int RT_priority = 80; //any number from 0-99
     struct sched_param schedpar;
 
     int use_semlog;
