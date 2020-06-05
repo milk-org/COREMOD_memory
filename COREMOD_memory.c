@@ -7688,6 +7688,16 @@ long COREMOD_MEMORY_image_NETWORKreceive(int port, int mode, int RT_priority) {
     long loopcnt = 0;
     int loopOK = 1;
 
+	long cnt0previous = 0;
+
+	long monitorinterval = 1000; // give stats every so many frames
+	long monitorindex = 0;
+	long inputcounter = 0;
+	long monitorloopindex = 0;
+	
+	long minputcnt = 0;
+	long moutputcnt = 0;
+
     while(loopOK == 1) {
         if(data.processinfo == 1) {
             while(processinfo->CTRLval == 1) { // pause
@@ -7732,6 +7742,32 @@ long COREMOD_MEMORY_image_NETWORKreceive(int port, int mode, int RT_priority) {
             } else {
                 memcpy(ptr0, buff, framesize);
             }
+            
+            long frameincr = (long) frame_md[0].cnt0 - cnt0previous;
+            if( frameincr > 1 )
+            {
+				printf("Skipped %ld frame(s) at index %ld\n", frameincr, (long) (frame_md[0].cnt0));
+				fflush(stdout);
+			}
+			cnt0previous = frame_md[0].cnt0;
+			
+			if(monitorindex == monitorinterval)
+			{
+				printf("[%5ld]  input %20ld (+ %8ld) output %20ld (+ %8ld)\n", 
+					monitorloopindex, 
+					frame_md[0].cnt0, frame_md[0].cnt0-minputcnt,
+					data.image[ID].md[0].cnt0, data.image[ID].md[0].cnt0-moutputcnt
+					);
+				
+				minputcnt = frame_md[0].cnt0;
+				moutputcnt = data.image[ID].md[0].cnt0;
+				
+				monitorloopindex++;
+				monitorindex = 0;
+			}
+			
+			monitorindex ++;
+			
 
             data.image[ID].md[0].cnt0++;
             for(semnb = 0; semnb < data.image[ID].md[0].sem ; semnb++) {
