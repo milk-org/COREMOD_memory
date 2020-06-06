@@ -7690,7 +7690,7 @@ long COREMOD_MEMORY_image_NETWORKreceive(int port, int mode, int RT_priority) {
 
 	long cnt0previous = 0;
 
-	long monitorinterval = 1000; // give stats every so many frames
+	long monitorinterval = 10000; // give stats every so many frames
 	long monitorindex = 0;
 	long inputcounter = 0;
 	long monitorloopindex = 0;
@@ -7746,8 +7746,7 @@ long COREMOD_MEMORY_image_NETWORKreceive(int port, int mode, int RT_priority) {
             long frameincr = (long) frame_md[0].cnt0 - cnt0previous;
             if( frameincr > 1 )
             {
-				printf("Skipped %ld frame(s) at index %ld\n", frameincr, (long) (frame_md[0].cnt0));
-				fflush(stdout);
+				printf("Skipped %ld frame(s) at index %ld\n", frameincr-1, (long) (frame_md[0].cnt0));
 			}
 			cnt0previous = frame_md[0].cnt0;
 			
@@ -8117,9 +8116,9 @@ long COREMOD_MEMORY_PixMapDecode_U(
                 }
                 //     printf("[%ld] ", slice); //TEST
 
-                if(slice == NBslice - 1) { //if(slice<oldslice)
+//                if(slice == NBslice - 1) { //if(slice<oldslice)
+				if(slice < oldslice) {
                     COREMOD_MEMORY_image_set_sempost_byID(IDout, -1);
-
 
                     data.image[IDout].md[0].cnt0 ++;
 
